@@ -1,5 +1,10 @@
 #include <stdio.h>
-/*to compile in terminal
+/*
+pccasey
+6/2/2026
+CS332
+
+to compile in terminal
 gcc -o labAssignment1 labAssignment.c
 
 to run in terminal
