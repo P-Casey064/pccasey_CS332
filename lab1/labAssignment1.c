@@ -5,7 +5,7 @@ pccasey
 CS332
 
 to compile in terminal
-gcc -o labAssignment1 labAssignment.c
+gcc -o labAssignment1 labAssignment1.c
 
 to run in terminal
 ./labAssignment1
