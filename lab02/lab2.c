@@ -28,7 +28,11 @@ int insertionSort(int n[], int A)
     printf("[");
     for(int i = 0; i < A; i++)
     {
-        printf("%d,", n[i]);
+        printf("%d", n[i]);
+    }
+    if(i < A - 1)
+    {
+        printf(", ");
     }
     printf("]\n");
 }
