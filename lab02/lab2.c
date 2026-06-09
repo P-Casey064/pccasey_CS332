@@ -1,5 +1,16 @@
 #include <stdio.h>
+/*
+pccasey
+6/9/2026
+CS332
 
+to compile in terminal
+gcc -o lab_2 lab2.c
+
+to run in terminal
+./lab_2
+
+*/
 int insertionSort(int n[], int A)
 {
     int temp, loc;
