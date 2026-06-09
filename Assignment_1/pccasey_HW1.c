@@ -1,5 +1,12 @@
 #include <stdio.h>
+#include <math.h>
+/*
+Compile:
+gcc -o hw1 pccasey_HW1.c -lm
 
+Run:
+./hw1
+*/
 int sumOfDigits(char n[], int A)
 {
     int total = 0;
@@ -63,6 +70,19 @@ int replaceEvenWithZero(int n[], int A)
     return 0;
 }
 
+int perfectSquare(double B)
+{
+    int C = (int)sqrt(B);
+    if(C * C == B)
+    {
+        printf("True\n");
+    }
+    else
+    {
+        printf("False\n");
+    }
+}
+
 
 int main(int argc, char** argv)
 {
@@ -96,4 +116,10 @@ int main(int argc, char** argv)
         scanf("%d", &t[i]);
     }
     replaceEvenWithZero(t, A);
+
+/*perfectSquare*/
+    double B;
+    printf("Input a number: ");
+    scanf("%lf", &B);
+    perfectSquare(B);
 }
