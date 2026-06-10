@@ -75,12 +75,32 @@ int perfectSquare(double B)
     int C = (int)sqrt(B);
     if(C * C == B)
     {
-        printf("True\n");
+        printf("True\n\n");
     }
     else
     {
-        printf("False\n");
+        printf("False\n\n");
     }
+}
+
+int countVowels(char n[], int A)
+{
+    const char vowels[] = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+    int count = 0;
+    int size = sizeof(vowels) / sizeof(vowels[0]);
+    for(int i = 0; i < A; i++)
+    {
+        for(int z = 0; z < size; z++)
+        {
+            if(n[i] == vowels[z])
+            {
+                count++;
+            }
+        }
+    }
+    printf("Total vowels: %d\n", count);
+    return 0;
+
 }
 
 
@@ -122,4 +142,11 @@ int main(int argc, char** argv)
     printf("Input a number: ");
     scanf("%lf", &B);
     perfectSquare(B);
+
+/*countVowels*/
+    printf("Input the size of your string: ");
+    scanf("%d", &A);
+    printf("Input your string: ");
+    scanf("%s", n);
+    countVowels(n, A+1);
 }
