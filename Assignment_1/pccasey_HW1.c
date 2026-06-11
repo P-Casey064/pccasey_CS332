@@ -92,7 +92,7 @@ int countVowels(char n[], int A)
     {
         for(int z = 0; z < size; z++)
         {
-            if(n[i] == vowels[z])
+            if(vowels[z] == n[i])
             {
                 count++;
             }
@@ -117,25 +117,27 @@ int main(int argc, char** argv)
     sumOfDigits(n, A);
 
 /*UABMaxMinDiff*/
+    int C;
     printf("Input the length of the Array: ");
-    scanf("%d", &A);
-    int t[A];
-    for(int i = 0; i < A; i++)
+    scanf("%d", &C);
+    int t[C];
+    for(int i = 0; i < C; i++)
     {
         printf("Input an element for the array: ");
         scanf("%d", &t[i]);
     }
-    UABMaxMinDiff(t, A);
+    UABMaxMinDiff(t, C);
 
 /*replaceEvenWithZero*/
+int D;
     printf("Input the length of the Array: ");
-    scanf("%d", &A);
-    for(int i = 0; i < A; i++)
+    scanf("%d", &D);
+    for(int i = 0; i < D; i++)
     {
         printf("Input an element for the array, even or odd: ");
         scanf("%d", &t[i]);
     }
-    replaceEvenWithZero(t, A);
+    replaceEvenWithZero(t, D);
 
 /*perfectSquare*/
     double B;
@@ -144,9 +146,11 @@ int main(int argc, char** argv)
     perfectSquare(B);
 
 /*countVowels*/
+    int F;
     printf("Input the size of your string: ");
-    scanf("%d", &A);
+    scanf("%d", &F);
+    char l[F + 1]; //so this includes the null space at the end of every string
     printf("Input your string: ");
-    scanf("%s", n);
-    countVowels(n, A+1);
+    scanf(" %[^\n]", l);
+    countVowels(l, F);
 }
