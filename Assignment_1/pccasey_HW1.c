@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 /*
-Compile:
+Compile: 
 gcc -o hw1 pccasey_HW1.c -lm
 
 Run:
