@@ -47,14 +47,21 @@ void displayString(char *arr, int A)
 
 int readString(char *arr, int N)
 {
+    int temp = strlen(arr);
     if (arr[0] == '\0') //this checks if the null pointer is first, which would be an improper input
     {
         printf("Not a proper string\n");
         return 0;
     }
-    else if(strlen(arr) + 1 != N) //adding 1 for null pointer
+    else if(temp == N) 
     {
-        printf("Size and length of string do not match\n");
+        printf("Null pointer not accounted for\n");
+        return 0;
+    }
+    else if(temp + 1 != N) //adding 1 for null pointer
+    {
+        printf("Size and length of string do not match\nSize: %d, ", N);
+        printf("Length: %d\n", temp);
         return 0;
     }
     else
@@ -68,9 +75,8 @@ int readString(char *arr, int N)
 int main(int argc, char** argv)
 {
     int N;
-    printf("Input the length of the array: ");
+    printf("Input the length of the array (account for null pointer): ");
     scanf("%d", &N);
-    N++; //adding 1 for null pointer
     if(N == 1 || N <= 0)  //this force ends the code for improper inputs
     {
         printf("Improper array length\n");
