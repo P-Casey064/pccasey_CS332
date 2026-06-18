@@ -53,7 +53,7 @@ int readString(char *arr, int N)
         printf("Not a proper string\n");
         return 0;
     }
-    else if(temp == N) 
+    else if(temp == N) //checks to see if there is enough space for the null pointer
     {
         printf("Null pointer not accounted for\n");
         return 0;
