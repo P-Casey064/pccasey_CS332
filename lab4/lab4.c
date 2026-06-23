@@ -89,6 +89,7 @@ close(RWFileDescriptor);
 RWFileDescriptor = open(argv[1], O_WRONLY); //opens the file for writing
 writeFile = open(argv[2], O_RDONLY); //opens file to read
 char ch;
+lseek(RWFileDescriptor, 0, SEEK_END);
 lseek(writeFile, 0, SEEK_SET);
 ssize_t bytes_read;
 
