@@ -21,7 +21,7 @@ RWFileDescriptor = open(argv[1], O_RDONLY); //reads first file
 
 if (RWFileDescriptor == -1){
 
-    printf("Error with file open1\n");
+    printf("Error with file open\n");
 
     exit (-1);
 }
@@ -82,6 +82,9 @@ if (lseek(RWFileDescriptor, SEEKSIZE, SEEK_END) >= 0){
 
     exit (-1);
 
+}}else {
+    printf("lseek error (Part 2)\n");
+    exit(-1);
 }
 
 close(RWFileDescriptor);
@@ -114,4 +117,4 @@ close(writeFile);
 return 0;
 
 }
-}
+
