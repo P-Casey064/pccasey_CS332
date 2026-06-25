@@ -4,7 +4,6 @@
 #include <fcntl.h>
 #include <string.h>
 #define BUFFSIZE 4096
-#define SEEKSIZE -30
 
 int main(int argc, char *argv[]) {
 
@@ -26,7 +25,7 @@ if (RWFileDescriptor == -1){
     exit (-1);
 }
 
-if (lseek(RWFileDescriptor, SEEKSIZE, SEEK_END) >= 0){
+if (lseek(RWFileDescriptor, SEEK_END - 2, 0) >= 0){
 
     if((n = read(RWFileDescriptor, buf, BUFFSIZE)) > 0){
 
@@ -40,7 +39,7 @@ if (lseek(RWFileDescriptor, SEEKSIZE, SEEK_END) >= 0){
 
 } else {
 
-    printf("Error reading file\n");
+    printf("Error reading file1\n");
 
     exit (-1);
 
@@ -64,7 +63,7 @@ if (RWFileDescriptor == -1){
     exit (-1);
 }
 
-if (lseek(RWFileDescriptor, SEEKSIZE, SEEK_END) >= 0){
+if (lseek(RWFileDescriptor, SEEK_END - 2, 0) >= 0){
 
     if((n = read(RWFileDescriptor, buf, BUFFSIZE)) > 0){
 
