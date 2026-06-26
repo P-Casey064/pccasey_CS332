@@ -4,6 +4,12 @@
 #include <fcntl.h>
 #include <string.h>
 #define BUFFSIZE 4096
+/*
+Compile: gcc -Wall -o lab4. lab4.c
+
+Run: ./lab4 <file1name> <file2name>
+
+*/
 
 int main(int argc, char *argv[]) {
 
@@ -94,6 +100,8 @@ char ch;
 lseek(RWFileDescriptor, 0, SEEK_END);
 lseek(writeFile, 0, SEEK_SET);
 ssize_t bytes_read;
+char newline = '\n';
+write(RWFileDescriptor, &newline, 1);
 
 while ((bytes_read = read(writeFile, &ch, 1)) > 0){
 
