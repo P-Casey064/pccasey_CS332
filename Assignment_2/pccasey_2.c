@@ -15,11 +15,42 @@ static int   option_f = 0;              // whether -f was given
 static char *option_f_pattern = NULL;   // -f <pattern>
 static int   option_f_depth = 0;        // -f <depth>
 
-static void print_S_info(const struct stat *st, long size_override)
+static void permissions(mode_t mode, char *buf)
+{
+    buf[0] = S_ISDIR(mode)  ? 'd' :
+             S_ISLNK(mode)  ? 'l' : '-';
+    buf[1] = (mode & S_IRUSR) ? 'r' : '-';
+    buf[2] = (mode & S_IWUSR) ? 'w' : '-';
+    buf[3] = (mode & S_IXUSR) ? 'x' : '-';
+    buf[4] = (mode & S_IRGRP) ? 'r' : '-';
+    buf[5] = (mode & S_IWGRP) ? 'w' : '-';
+    buf[6] = (mode & S_IXGRP) ? 'x' : '-';
+    buf[7] = (mode & S_IROTH) ? 'r' : '-';
+    buf[8] = (mode & S_IWOTH) ? 'w' : '-';
+    buf[9] = (mode & S_IXOTH) ? 'x' : '-';
+    buf[10] = '\0';
+}
+
+static char *last_access(const struct stat *st)
+{
+    static char buf[32];
+    strcpy(buf, ctime(&st->st_atime));
+    for(int i = 0; i < 32; i++)
+    {
+        if(buf[i] == '\n')
+        {
+            buf[i] = '\0';
+        }
+    }
+    return buf;
+}
+
+
+static void print_S(const struct stat *st, long size_override)
 {
     char perm[11];
-    //mode_to_str(st->st_mode, perm);
-    printf(" (%ld, %s, %s)", size_override, perm, "l"); //time_to_str(st->st_atime)
+    permissions(st->st_mode, perm);
+    printf(" (%ld, %s, %s)", size_override, perm, last_access(st));
 }
 
 void display_struct(const char *path, int depth) {
@@ -53,7 +84,7 @@ void display_struct(const char *path, int depth) {
         printf("%s", entry->d_name);
 
         if (option_S) {
-            print_S_info(&st, (long)st.st_size);
+            print_S(&st, (long)st.st_size);
         }
         printf("\n");
 
@@ -109,5 +140,5 @@ int main(int argc, char *argv[])
 
     }
     display_struct(start_dir, 0);
-    return 0;~
+    return 0;
 }
