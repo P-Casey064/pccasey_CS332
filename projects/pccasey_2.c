@@ -7,7 +7,17 @@
 #include <time.h>
 #include <errno.h>
 
-//Static so there is no changes from outside the file
+
+/*
+Name: Patrick Casey
+BlazerId: pccasey
+Project #: 2
+To compile: $ make
+        or  $ gcc -o HW2 pccasey_2.c
+To run: ./HW2 -S -s <bytes> -f <string pattern> <depth>
+        -S -s -f can be ran in any order
+*/
+
 static int   option_S = 0;              // -S flag
 static int   option_s = 0;              // -s was given
 static long  option_s_size = 0;         // -s <bytes>
@@ -15,29 +25,29 @@ static int   option_f = 0;              // whether -f was given
 static char *option_f_pattern = NULL;   // -f <pattern>
 static int   option_f_depth = 0;        // -f <depth>
 
-static void permissions(mode_t mode, char *buf)
-{
-    buf[0] = S_ISDIR(mode)  ? 'd' :
+static void permissions(mode_t mode, char *perms)
+{ //provides a char array for the permissions to owner, group, and other. A letter if it has those permissions or a - if it doesn't
+    perms[0] = S_ISDIR(mode)  ? 'd' :
              S_ISLNK(mode)  ? 'l' : '-';
-    buf[1] = (mode & S_IRUSR) ? 'r' : '-';
-    buf[2] = (mode & S_IWUSR) ? 'w' : '-';
-    buf[3] = (mode & S_IXUSR) ? 'x' : '-';
-    buf[4] = (mode & S_IRGRP) ? 'r' : '-';
-    buf[5] = (mode & S_IWGRP) ? 'w' : '-';
-    buf[6] = (mode & S_IXGRP) ? 'x' : '-';
-    buf[7] = (mode & S_IROTH) ? 'r' : '-';
-    buf[8] = (mode & S_IWOTH) ? 'w' : '-';
-    buf[9] = (mode & S_IXOTH) ? 'x' : '-';
-    buf[10] = '\0';
+    perms[1] = (mode & S_IRUSR) ? 'r' : '-';
+    perms[2] = (mode & S_IWUSR) ? 'w' : '-';
+    perms[3] = (mode & S_IXUSR) ? 'x' : '-';
+    perms[4] = (mode & S_IRGRP) ? 'r' : '-';
+    perms[5] = (mode & S_IWGRP) ? 'w' : '-';
+    perms[6] = (mode & S_IXGRP) ? 'x' : '-';
+    perms[7] = (mode & S_IROTH) ? 'r' : '-';
+    perms[8] = (mode & S_IWOTH) ? 'w' : '-';
+    perms[9] = (mode & S_IXOTH) ? 'x' : '-';
+    perms[10] = '\0';
 }
 
 static char *last_access(const struct stat *st)
 {
     static char buf[32];
-    strcpy(buf, ctime(&st->st_atime));
+    strcpy(buf, ctime(&st->st_atime)); //provides the last access time
     for(int i = 0; i < 32; i++)
     {
-        if(buf[i] == '\n')
+        if(buf[i] == '\n') //gets rid of the new line created
         {
             buf[i] = '\0';
         }
@@ -50,7 +60,7 @@ static void print_S(const struct stat *st, long size_override)
 {
     char perm[11];
     permissions(st->st_mode, perm);
-    printf(" (%ld, %s, %s)", size_override, perm, last_access(st));
+    printf(" (%ld, %s, %s)", size_override, perm, last_access(st)); //prints out the long int bytes, permissions, and the last access times
 }
 
 void display_struct(const char *path, int depth) {
