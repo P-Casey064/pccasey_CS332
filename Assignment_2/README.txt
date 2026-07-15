@@ -17,3 +17,4 @@ display_struct() is the recursion function that handles displaying purely the na
 main() is where it figures out if -S, -s, or -f is used when running the code.  It loops until it goes through all arguments in argc.  
 It also gets the name of the directory the .c file is in for easier viewing.
 
+Github repo link: https://github.com/P-Casey064/pccasey_CS332.git
