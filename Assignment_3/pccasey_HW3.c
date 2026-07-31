@@ -19,6 +19,10 @@ to run:     $ ./HW3 <directory>
 #include <errno.h>
 #include <sys/wait.h>
 
+
+
+
+
 int main(int argc, char *argv[])
 {
     if (argc < 2) //checks for directory argument
@@ -50,9 +54,9 @@ int main(int argc, char *argv[])
         {
             continue;
         }
-        char fullPath[4096];
+        char fullPath[4096]; //holds directory path
         snprintf(fullPath, sizeof(fullPath), "%s/%s", start_dir, entry->d_name);
-
+        //entry->d_name gets the file name
 
         struct stat st;
         stat(fullPath, &st);
@@ -62,7 +66,7 @@ int main(int argc, char *argv[])
         }
         pid_t pid = fork();
 
-        if (pid < 0)
+        if (pid < 0) //catches if fork fails
         {
             perror("Fork failed");
             closedir(dir);
@@ -75,13 +79,13 @@ int main(int argc, char *argv[])
 
             //call to a seperate method for file size
             //call to a seperate method for .txt check and word count
-            printf("File: %s\t|Size: ", entry->d_name);
+            printf("File: %s | Size: %ld | Words: \n", entry->d_name, (long)st.st_size);
             exit(0);
         }
         else //parent process
         {
             int status;
-            waitpid(pid, &status, 0);
+            waitpid(pid, &status, 0); //waits for child processes to end
         }
 
     }
