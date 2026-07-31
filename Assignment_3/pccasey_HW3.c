@@ -1,3 +1,14 @@
+/*
+Name:       Patrick Casey
+BlazerID:   pccasey
+Project #:  3
+to compile: $ gcc -Wall pccasey_HW3.c -o HW3
+or          $ make
+to run:     $ ./HW3 <directory>
+*/
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,9 +21,9 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
+    if (argc < 2) //checks for directory argument
     {
-        printf("No arguments given, exiting program");
+        printf("Usage: ./HW3 <directory_name>");
         return 0;
     }
     const char *start_dir = argv[1];
@@ -34,7 +45,18 @@ int main(int argc, char *argv[])
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL)
     {
+
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+        {
+            continue;
+        }
+        char fullPath[4096];
+        snprintf(fullPath, sizeof(fullPath), "%s/%s", start_dir, entry->d_name);
+
+
+        struct stat st;
+        stat(fullPath, &st);
+        if (S_ISDIR(st.st_mode)) //skips subdirectories
         {
             continue;
         }
@@ -50,9 +72,10 @@ int main(int argc, char *argv[])
         {
             //this will contain the meat of the program. Print file name, file size in bytes, 
             //how many words the file contains for .txt files
-            char fullPath[4096]; 
-            snprintf(fullPath, sizeof(fullPath), "%s/%s", start_dir, entry->d_name);
-            printf("%s\n", entry->d_name);
+
+            //call to a seperate method for file size
+            //call to a seperate method for .txt check and word count
+            printf("File: %s\t|Size: ", entry->d_name);
             exit(0);
         }
         else //parent process
