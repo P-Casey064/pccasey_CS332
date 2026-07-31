@@ -19,7 +19,10 @@ to run:     $ ./HW3 <directory>
 #include <errno.h>
 #include <sys/wait.h>
 
-
+int read_txt()
+{
+    
+}
 
 
 
@@ -77,9 +80,15 @@ int main(int argc, char *argv[])
             //this will contain the meat of the program. Print file name, file size in bytes, 
             //how many words the file contains for .txt files
 
-            //call to a seperate method for file size
-            //call to a seperate method for .txt check and word count
-            printf("File: %s | Size: %ld | Words: \n", entry->d_name, (long)st.st_size);
+            if(strstr(entry->d_name, ".txt") != NULL) //checks for .txt files
+            {
+                //call to a seperate method for word count
+                printf("File: %s | Size: %ld | Words: \n", entry->d_name, (long)st.st_size);
+            }
+            else
+            {
+                printf("File: %s | Size: %ld\n", entry->d_name, (long)st.st_size);
+            }
             exit(0);
         }
         else //parent process
