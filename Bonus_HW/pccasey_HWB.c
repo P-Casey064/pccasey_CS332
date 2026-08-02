@@ -25,7 +25,8 @@ void *producer(void *arg)
 
     int unique[max + 1] = {0}; //array to keep track of unique numbers in the thread
     int numbers[per_producer]; //array to store numbers
-    unsigned int seed = srand(time(NULL)); //ai
+    srand(time(NULL));
+    unsigned int seed = rand(); //ai
 
     for (int i = 0; i < per_producer; )
     {
