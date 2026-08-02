@@ -29,7 +29,7 @@ void *producer(void *arg)
 
     for (int i = 0; i < per_producer; )
     {
-        int random_num = rand_r(&seed) % max;
+        int random_num = rand_r(&seed) % (max + 1); //with the + 1, it would be 0 to 999
         if (!unique[random_num])
         {
             unique[random_num] = 1; //ai caught a bug here
