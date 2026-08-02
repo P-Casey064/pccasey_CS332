@@ -49,14 +49,14 @@ void *producer(void *arg)
     }
     
 
-    printf("Thread complete ID: %d\n", thread_index);
+    printf("Thread #%d complete ID: %lu\n", thread_index,(unsigned long)pthread_self());
     return 0;
 
 }
 
 void *consumer(void *arg)
 {
-    int thread_index = *(int *)arg;
+    int thread_index = *(int *)arg; //used in consumer for keeping track of the totals per thread
     free(arg);
 
     int number;
@@ -120,13 +120,13 @@ int main(int argc, char *argv[])
         close(pipefd[0]);
         for (int i = 0; i < producers; i++) //ai
         {                                   //generates 10 producers
-            int *idx = malloc(sizeof(int)); //this is what is used for thread ID
+            int *idx = malloc(sizeof(int)); //this keeps track of the sum in consumer
             *idx = i;
             pthread_create(&t_producers[i], NULL, producer, idx);
         }
         for(int i = 0; i < producers; i++)
         {
-            pthread_join(t_producers[i], NULL);
+            pthread_join(t_producers[i], NULL); //is a clean up function that waits for a thread to finish
         }
         int status;
         waitpid(pid, &status, 0);
@@ -134,17 +134,17 @@ int main(int argc, char *argv[])
     else if (pid == 0) //child
     {   
 
-        freopen("average.txt", "w", stdout);
+        freopen("average.txt", "w", stdout); //ai
         close(pipefd[1]);
         for (int i = 0; i < consumers; i++) //ai
         {                                   //generates 10 consumers
-            int *idx = malloc(sizeof(int)); //this is what is used for thread ID
+            int *idx = malloc(sizeof(int)); //this is what is used for thread number
             *idx = i;
             pthread_create(&t_consumers[i], NULL, consumer, idx);
         }
         for(int i = 0; i < consumers; i++)
         {
-            pthread_join(t_consumers[i], NULL);
+            pthread_join(t_consumers[i], NULL); //is a clean up function that waits for a thread to finish
         }
         printf("Average of all consumer sums: %.2f\n", average());
         exit(0); //ends child process
