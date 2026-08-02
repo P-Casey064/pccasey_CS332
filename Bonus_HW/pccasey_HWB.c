@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <time.h>
 
 #define producers 10
 #define consumers 20
@@ -21,18 +22,17 @@ int sums[consumers];
 void *producer(void *arg)
 {
     int thread_index = *(int *)arg;
-    free(arg); //ai, these two lines allow the thread to print its id
 
-    int unique[max] = {0}; //array to keep track of unique numbers in the thread
+    int unique[max + 1] = {0}; //array to keep track of unique numbers in the thread
     int numbers[per_producer]; //array to store numbers
-    unsigned int seed = time(NULL) ^ thread_index; //ai
+    unsigned int seed = srand(time(NULL)); //ai
 
     for (int i = 0; i < per_producer; )
     {
         int random_num = rand_r(&seed) % (max + 1); //with the + 1, it would be 0 to 999
         if (!unique[random_num])
         {
-            unique[random_num] = 1; //ai caught a bug here
+            unique[random_num] = 1; //ai caught a bug here. had the variable i instead of random_num
             numbers[i] = random_num;
             i++; //increase i here so that if a number is duplicated, it'll loop that again until there is a free number
         }
@@ -49,15 +49,14 @@ void *producer(void *arg)
     }
     
 
-    printf("Thread #%d complete ID: %lu\n", thread_index,(unsigned long)pthread_self());
+    fprintf(stderr, "Thread #%d complete ID: %lu\n", thread_index,(unsigned long)pthread_self()); //ai made the change to fprintf and adding stdeer so that it prints in terminal only and not in the txt file
     return 0;
 
 }
 
 void *consumer(void *arg)
 {
-    int thread_index = *(int *)arg; //used in consumer for keeping track of the totals per thread
-    free(arg);
+    int thread_index = *(int *)arg;
 
     int number;
     int total = 0;
@@ -91,6 +90,8 @@ int main(int argc, char *argv[])
 {
     pthread_t t_producers[producers];
     pthread_t t_consumers[consumers];
+    int pro[producers];
+    int con[consumers];
 
     if(pipe(pipefd) == -1) //catches if the pipe fails
     {
@@ -107,7 +108,6 @@ int main(int argc, char *argv[])
         perror("sem_init");
         return 1;
     }
-    srand(time(NULL)); //ai. Added because it was producing the same average every run
 
     pid_t pid = fork();
     if(pid < 0)
@@ -120,9 +120,8 @@ int main(int argc, char *argv[])
         close(pipefd[0]);
         for (int i = 0; i < producers; i++) //ai
         {                                   //generates 10 producers
-            int *idx = malloc(sizeof(int)); //this keeps track of the sum in consumer
-            *idx = i;
-            pthread_create(&t_producers[i], NULL, producer, idx);
+            pro[i] = i; //this keeps track of the sum in consumer. was ai but changed due to ai choice being more than needed
+            pthread_create(&t_producers[i], NULL, producer, &pro[i]);
         }
         for(int i = 0; i < producers; i++)
         {
@@ -134,13 +133,11 @@ int main(int argc, char *argv[])
     else if (pid == 0) //child
     {   
 
-        freopen("average.txt", "w", stdout); //ai
         close(pipefd[1]);
-        for (int i = 0; i < consumers; i++) //ai
+        for (int i = 0; i < consumers; i++) //ai, copied from producer
         {                                   //generates 10 consumers
-            int *idx = malloc(sizeof(int)); //this is what is used for thread number
-            *idx = i;
-            pthread_create(&t_consumers[i], NULL, consumer, idx);
+            con[i] = i; //this is what is used for thread number. was ai but changed due to ai choice being more than needed
+            pthread_create(&t_consumers[i], NULL, consumer, &con[i]);
         }
         for(int i = 0; i < consumers; i++)
         {
